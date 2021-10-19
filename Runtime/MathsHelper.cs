@@ -7,8 +7,13 @@ using UnityEngine;
 
 namespace DavidFDev.Maths
 {
+    /// <summary>
+    ///     Collection of static maths helper methods.
+    /// </summary>
     public static class MathsHelper
     {
+        #region Static methods
+
         /// <summary>
         ///     Shift the start value towards the end value without exceeding.
         /// </summary>
@@ -320,5 +325,7 @@ namespace DavidFDev.Maths
             direction = Quaternion.Euler(0f, 0f, degrees) * direction;
             return direction + pivot;
         }
+
+        #endregion
     }
 }
