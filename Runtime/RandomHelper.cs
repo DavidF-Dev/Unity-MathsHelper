@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace DavidFDev.Maths
@@ -61,6 +62,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool NextBool()
         {
             return RNG.Next(1) == 0;
@@ -71,6 +73,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float NextFloat()
         {
             return (float)RNG.NextDouble();
@@ -82,6 +85,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float NextFloat(float max)
         {
             return NextFloat() * max;
@@ -93,6 +97,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int NextInt(int max)
         {
             return RNG.Next(max);
@@ -103,6 +108,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float NextAngle()
         {
             return NextFloat(PI_2);
@@ -113,6 +119,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color NextColour()
         {
             return new Color(NextFloat(), NextFloat(), NextFloat());
@@ -124,6 +131,7 @@ namespace DavidFDev.Maths
         /// <param name="magnitude"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 NextVector2(float magnitude = 1f)
         {
             return MathsHelper.GetDirection(NextAngle() * Mathf.Rad2Deg) * magnitude;
@@ -135,6 +143,7 @@ namespace DavidFDev.Maths
         /// <param name="magnitude"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 NextVector3(float magnitude = 1f)
         {
             return MathsHelper.GetDirection(NextAngle() * Mathf.Rad2Deg) * magnitude;
@@ -147,6 +156,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Range(float min, float max)
         {
             return min + NextFloat(max - min);
@@ -159,6 +169,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Range(Vector2 min, Vector2 max)
         {
             return min + new Vector2(NextFloat(max.x - min.x), NextFloat(max.y - min.y));
@@ -171,6 +182,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Range(Vector3 min, Vector3 max)
         {
             return min + new Vector3(NextFloat(max.x - min.x), NextFloat(max.y - min.y), NextFloat(max.z - min.z));
@@ -181,6 +193,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float MinusOneToOne()
         {
             return NextFloat(2f) - 1f;
@@ -191,6 +204,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MinusOneOrOne()
         {
             return NextBool() ? -1 : 1;
@@ -202,6 +216,7 @@ namespace DavidFDev.Maths
         /// <param name="percent">0.0 - 1.0.</param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Chance(float percent)
         {
             return NextFloat() < percent;
@@ -213,6 +228,7 @@ namespace DavidFDev.Maths
         /// <param name="percent">0 - 100.</param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Chance(int percent)
         {
             return NextInt(100) < percent;
@@ -225,6 +241,7 @@ namespace DavidFDev.Maths
         /// <param name="collection"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Choose<T>(this IReadOnlyCollection<T> collection)
         {
             return collection.ElementAt(NextInt(collection.Count));

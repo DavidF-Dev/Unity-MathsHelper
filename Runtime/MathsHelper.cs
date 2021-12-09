@@ -3,6 +3,7 @@
 // Created by: DavidFDev
 
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace DavidFDev.Maths
@@ -22,6 +23,7 @@ namespace DavidFDev.Maths
         /// <param name="shift"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Approach(float start, float end, float shift)
         {
             if (start < end)
@@ -40,6 +42,7 @@ namespace DavidFDev.Maths
         /// <param name="shift"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float ApproachAngle(float start, float end, float shift)
         {
             float deltaAngle = Mathf.DeltaAngle(start, end);
@@ -58,6 +61,7 @@ namespace DavidFDev.Maths
         /// <param name="shift"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Reduce(float start, float shift)
         {
             return Approach(start, 0f, shift);
@@ -70,6 +74,7 @@ namespace DavidFDev.Maths
         /// <param name="shift"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float ReduceAngle(float start, float shift)
         {
             return ApproachAngle(start, 0f, shift);
@@ -84,6 +89,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Pulse(float time, float frequency, float min, float max)
         {
             float half = (max - min) * 0.5f;
@@ -97,6 +103,7 @@ namespace DavidFDev.Maths
         /// <param name="frequency">How many false..true..false per second (lower is slower).</param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool FlipFlop(float time, float frequency)
         {
             return Pulse(time, frequency, 0f, 1f) >= 0.5f;
@@ -109,6 +116,7 @@ namespace DavidFDev.Maths
         /// <param name="frequency">Blip speed (lower is slower).</param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Blip(float time, float frequency)
         {
             return Pulse(time, frequency, 0f, 1f) == 1f;
@@ -120,6 +128,7 @@ namespace DavidFDev.Maths
         /// <param name="value"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Sign(float value)
         {
             return value < 0f ? -1f : (value > 0f ? 1f : 0f);
@@ -132,6 +141,7 @@ namespace DavidFDev.Maths
         /// <param name="threshold"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float SignThreshold(float value, float threshold)
         {
             return Mathf.Abs(value) >= threshold ? Sign(value) : 0f;
@@ -143,6 +153,7 @@ namespace DavidFDev.Maths
         /// <param name="value"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Sign(Vector2 value)
         {
             return new Vector2(Sign(value.x), Sign(value.y));
@@ -154,6 +165,7 @@ namespace DavidFDev.Maths
         /// <param name="value"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Sign(Vector3 value)
         {
             return new Vector3(Sign(value.x), Sign(value.y), Sign(value.z));
@@ -167,6 +179,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Between(float value, float min, float max)
         {
             return value >= min && value <= max;
@@ -180,6 +193,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Between(int value, int min, int max)
         {
             return value >= min && value <= max;
@@ -191,6 +205,7 @@ namespace DavidFDev.Maths
         /// <param name="value"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsEven(int value)
         {
             return value % 2 == 0;
@@ -202,6 +217,7 @@ namespace DavidFDev.Maths
         /// <param name="value"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOdd(int value)
         {
             return !IsEven(value);
@@ -215,6 +231,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Map01(float value, float min, float max)
         {
             return (value - min) * 1f / (max - min);
@@ -228,6 +245,7 @@ namespace DavidFDev.Maths
         /// <param name="max"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Map10(float value, float min, float max)
         {
             return 1f - Map01(value, min, max);
@@ -243,6 +261,7 @@ namespace DavidFDev.Maths
         /// <param name="to2"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Map(float value, float from1, float from2, float to1, float to2)
         {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
@@ -254,6 +273,7 @@ namespace DavidFDev.Maths
         /// <param name="degrees"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 GetDirection(float degrees)
         {
             return new Vector2(Mathf.Cos(degrees * Mathf.Deg2Rad), Mathf.Sin(degrees * Mathf.Deg2Rad));
@@ -265,6 +285,7 @@ namespace DavidFDev.Maths
         /// <param name="direction"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float GetAngle(Vector2 direction)
         {
             return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -277,6 +298,7 @@ namespace DavidFDev.Maths
         /// <param name="directionB"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float GetAngleBetween(Vector2 directionA, Vector2 directionB)
         {
             return GetAngle(directionA - directionB);
@@ -291,6 +313,7 @@ namespace DavidFDev.Maths
         /// <param name="degrees"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool WithinAngle(Vector2 source, Vector2 target, Vector2 coneDirection, float degrees)
         {
             Vector2 direction = (target - source).normalized;
@@ -306,6 +329,7 @@ namespace DavidFDev.Maths
         /// <param name="degrees"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 RotateVector(Vector2 value, float degrees)
         {
             return GetDirection(GetAngle(value) + degrees);
@@ -319,6 +343,7 @@ namespace DavidFDev.Maths
         /// <param name="pivot"></param>
         /// <returns></returns>
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 RotateVector(Vector2 value, float degrees, Vector2 pivot)
         {
             Vector2 direction = value - pivot;
