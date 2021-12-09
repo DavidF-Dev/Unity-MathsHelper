@@ -42,6 +42,12 @@ namespace DavidFDev.Maths
 
         private static int _seed = 0;
 
+        private readonly static char[] _symbols = new char[]
+        {
+            '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':',
+            ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'
+        };
+
         private const float PI_2 = Mathf.PI * 2f;
 
         #endregion
@@ -69,6 +75,40 @@ namespace DavidFDev.Maths
         }
 
         /// <summary>
+        ///     Retrieve a random lowercase letter.
+        /// </summary>
+        /// <returns></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static char NextLetter()
+        {
+            return (char)Range(97, 123);
+        }
+
+        /// <summary>
+        ///     Retrieve a random symbol.
+        /// </summary>
+        /// <returns></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static char NextSymbol()
+        {
+            return Choose(_symbols);
+        }
+
+        /// <summary>
+        ///     Retrieve a random digit.
+        /// </summary>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int NextDigit()
+        {
+            return RNG.Next(10);
+        }
+
+        /// <summary>
         ///     Retrieve a random float value between 0 [inclusive] and 1 [exclusive].
         /// </summary>
         /// <returns></returns>
@@ -89,6 +129,29 @@ namespace DavidFDev.Maths
         public static float NextFloat(float max)
         {
             return NextFloat() * max;
+        }
+
+        /// <summary>
+        ///     Retrieve a random double value between 0 [inclusive] and 1 [exclusive].
+        /// </summary>
+        /// <returns></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double NextDouble()
+        {
+            return RNG.NextDouble();
+        }
+
+        /// <summary>
+        ///     Retrieve a random double between 0 [inclusive] and a max value [exclusive].
+        /// </summary>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double NextDouble(double max)
+        {
+            return NextDouble() * max;
         }
 
         /// <summary>
@@ -163,6 +226,19 @@ namespace DavidFDev.Maths
         }
 
         /// <summary>
+        ///     Retrieve a random double between a min value [inclusive] and a max value [exclusive].
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Range(double min, double max)
+        {
+            return min + NextDouble(max - min);
+        }
+
+        /// <summary>
         ///     Retrieve a random vector with components between a min value [inclusive] and a max value [exclusive].
         /// </summary>
         /// <param name="min"></param>
@@ -220,6 +296,18 @@ namespace DavidFDev.Maths
         public static bool Chance(float percent)
         {
             return NextFloat() < percent;
+        }
+
+        /// <summary>
+        ///     Roll a random chance.
+        /// </summary>
+        /// <param name="percent">0.0 - 1.0.</param>
+        /// <returns></returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Chance(double percent)
+        {
+            return NextDouble() < percent;
         }
 
         /// <summary>
