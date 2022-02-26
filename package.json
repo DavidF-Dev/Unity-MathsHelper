@@ -1,6 +1,6 @@
 {
 	"name": "com.davidfdev.maths",
-	"version": "0.1.1",
+	"version": "1.0.1",
 	"displayName": "Maths & Random by DavidFDev",
 	"description": "A collection of maths helper functions",
 	"unity": "2019.1",
