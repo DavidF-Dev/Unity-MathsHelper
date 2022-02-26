@@ -4,9 +4,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace DavidFDev.Maths
@@ -17,46 +17,52 @@ namespace DavidFDev.Maths
     public static class RandomHelper
     {
         #region Static fields and constants
+        
+        private static int _seed;
 
+        private static readonly char[] Symbols =
+        {
+            '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':',
+            ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'
+        };
+
+        // ReSharper disable once InconsistentNaming
+        private const float PI_2 = Mathf.PI * 2f;
+
+        #endregion
+        
+        #region Static properties
+        
         /// <summary>
         ///     Random number generator used by the helper methods.
         /// </summary>
-        public static System.Random RNG { get; private set; } = null;
+        [PublicAPI, NotNull]
+        // ReSharper disable once InconsistentNaming
+        public static System.Random RNG { get; private set; }
 
         /// <summary>
         ///     Seed used by the random number generator instance.
         ///     Setting a new seed will initialise a new random number generator.
         /// </summary>
+        [PublicAPI]
         public static int Seed
         {
-            get
-            {
-                return _seed;
-            }
+            get => _seed;
             set
             {
                 _seed = value;
                 RNG = new System.Random(_seed);
             }
         }
-
-        private static int _seed = 0;
-
-        private readonly static char[] _symbols = new char[]
-        {
-            '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':',
-            ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'
-        };
-
-        private const float PI_2 = Mathf.PI * 2f;
-
+        
         #endregion
 
         #region Static constructor
 
         static RandomHelper()
         {
-            Seed = Environment.TickCount;
+            _seed = Environment.TickCount;
+            RNG = new System.Random(_seed);
         }
 
         #endregion
@@ -67,8 +73,7 @@ namespace DavidFDev.Maths
         ///     Retrieve a random bool value.
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool NextBool()
         {
             return RNG.Next(1) == 0;
@@ -78,8 +83,7 @@ namespace DavidFDev.Maths
         ///     Retrieve a random lowercase letter.
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static char NextLetter()
         {
             return (char)Range(97, 123);
@@ -89,20 +93,17 @@ namespace DavidFDev.Maths
         ///     Retrieve a random symbol.
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static char NextSymbol()
         {
-            return Choose(_symbols);
+            return Choose(Symbols);
         }
 
         /// <summary>
         ///     Retrieve a random digit.
         /// </summary>
-        /// <param name="max"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int NextDigit()
         {
             return RNG.Next(10);
@@ -112,8 +113,7 @@ namespace DavidFDev.Maths
         ///     Retrieve a random float value between 0 [inclusive] and 1 [exclusive].
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float NextFloat()
         {
             return (float)RNG.NextDouble();
@@ -124,8 +124,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <param name="max"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float NextFloat(float max)
         {
             return NextFloat() * max;
@@ -135,8 +134,7 @@ namespace DavidFDev.Maths
         ///     Retrieve a random double value between 0 [inclusive] and 1 [exclusive].
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double NextDouble()
         {
             return RNG.NextDouble();
@@ -147,8 +145,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <param name="max"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double NextDouble(double max)
         {
             return NextDouble() * max;
@@ -159,8 +156,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <param name="max"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int NextInt(int max)
         {
             return RNG.Next(max);
@@ -170,19 +166,27 @@ namespace DavidFDev.Maths
         ///     Retrieve a random angle between 0 and 2 PI (radians).
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float NextAngle()
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float NextAngleRadians()
         {
             return NextFloat(PI_2);
+        }
+
+        /// <summary>
+        ///     Retrieve a random angle between 0 and 360 (degrees).
+        /// </summary>
+        /// <returns></returns>
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float NextAngleDegrees()
+        {
+            return NextFloat(360f);
         }
 
         /// <summary>
         ///     Retrieve a colour with random component values (rgb).
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color NextColour()
         {
             return new Color(NextFloat(), NextFloat(), NextFloat());
@@ -193,33 +197,42 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <param name="magnitude"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 NextVector2(float magnitude = 1f)
         {
-            return MathsHelper.GetDirection(NextAngle() * Mathf.Rad2Deg) * magnitude;
+            return MathsHelper.GetDirection(NextAngleRadians() * Mathf.Rad2Deg) * magnitude;
         }
 
         /// <summary>
-        ///     Retrive a random unit vector.
+        ///     Retrieve a random unit vector.
         /// </summary>
         /// <param name="magnitude"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 NextVector3(float magnitude = 1f)
         {
-            return MathsHelper.GetDirection(NextAngle() * Mathf.Rad2Deg) * magnitude;
+            return MathsHelper.GetDirection(NextAngleRadians() * Mathf.Rad2Deg) * magnitude;
         }
 
+        /// <summary>
+        ///     Retrieve a random int between a min value [inclusive] and a max value [exclusive].
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Range(int min, int max)
+        {
+            return min + NextInt(max - min);
+        }
+        
         /// <summary>
         ///     Retrieve a random float between a min value [inclusive] and a max value [exclusive].
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Range(float min, float max)
         {
             return min + NextFloat(max - min);
@@ -231,8 +244,7 @@ namespace DavidFDev.Maths
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Range(double min, double max)
         {
             return min + NextDouble(max - min);
@@ -244,8 +256,7 @@ namespace DavidFDev.Maths
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Range(Vector2 min, Vector2 max)
         {
             return min + new Vector2(NextFloat(max.x - min.x), NextFloat(max.y - min.y));
@@ -257,19 +268,17 @@ namespace DavidFDev.Maths
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Range(Vector3 min, Vector3 max)
         {
             return min + new Vector3(NextFloat(max.x - min.x), NextFloat(max.y - min.y), NextFloat(max.z - min.z));
         }
 
         /// <summary>
-        ///     Retrieve a random float betwen -1 and 1.
+        ///     Retrieve a random float between -1 and 1.
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float MinusOneToOne()
         {
             return NextFloat(2f) - 1f;
@@ -279,8 +288,7 @@ namespace DavidFDev.Maths
         ///     Retrieve a random integer, either -1 or 1.
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MinusOneOrOne()
         {
             return NextBool() ? -1 : 1;
@@ -291,8 +299,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <param name="percent">0.0 - 1.0.</param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Chance(float percent)
         {
             return NextFloat() < percent;
@@ -303,8 +310,7 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <param name="percent">0.0 - 1.0.</param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Chance(double percent)
         {
             return NextDouble() < percent;
@@ -315,24 +321,38 @@ namespace DavidFDev.Maths
         /// </summary>
         /// <param name="percent">0 - 100.</param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [PublicAPI, Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Chance(int percent)
         {
             return NextInt(100) < percent;
         }
 
         /// <summary>
-        ///     Retrieve a random element from a collection.
+        ///     Retrieve a random element from an enumerable, or default if empty.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="collection"></param>
+        /// <param name="enumerable"></param>
         /// <returns></returns>
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Choose<T>(this IReadOnlyCollection<T> collection)
+        [PublicAPI, Pure, CanBeNull, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Choose<T>(this IEnumerable<T> enumerable)
         {
-            return collection.ElementAt(NextInt(collection.Count));
+            if (enumerable is IReadOnlyCollection<T> collection)
+            {
+                return !collection.Any() ? default : collection.ElementAt(NextInt(collection.Count));
+            }
+            
+            T current = default;
+            var count = 0;
+            foreach (var element in enumerable)
+            {
+                count += 1;
+                if (NextInt(count) == 0)
+                {
+                    current = element;
+                }
+            }
+
+            return current;
         }
 
         #endregion
